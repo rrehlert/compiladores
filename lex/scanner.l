@@ -1,7 +1,7 @@
 %{
 #include "tokens.h"
+#include "main.c"
 int lineNumber = 1;
-int yytok = 0;
 int isRunning = 1;
 
 int getLineNumber(void){
@@ -43,15 +43,6 @@ return                      {return KW_RETURN;}
 <COMMENTS>.                 {}
 
 %%
-
-int main(){
-    yytok = yylex();
-    while(isRunning){
-        printf("token number: %d\n", yytok);
-        yytok = yylex();
-    }
-    return 0;
-}
 
 
 int yywrap(void){

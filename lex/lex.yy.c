@@ -497,8 +497,8 @@ char *yytext;
 #line 1 "scanner.l"
 #line 2 "scanner.l"
 #include "tokens.h"
+#include "main.c"
 int lineNumber = 1;
-int yytok = 0;
 int isRunning = 1;
 
 int getLineNumber(void){
@@ -1941,15 +1941,6 @@ void yyfree (void * ptr )
 
 #line 45 "scanner.l"
 
-
-int main(){
-    yytok = yylex();
-    while(isRunning){
-        printf("token number: %d\n", yytok);
-        yytok = yylex();
-    }
-    return 0;
-}
 
 
 int yywrap(void){
