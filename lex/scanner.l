@@ -1,6 +1,6 @@
 %{
 #include "tokens.h"
-#include "main.c"
+#include "hash.h"
 int lineNumber = 1;
 int isRunning = 1;
 
@@ -27,7 +27,7 @@ return                      {return KW_RETURN;}
 ">="                        {return OPERATOR_GE;}
 "=="                        {return OPERATOR_EQ;}
 "!="                        {return OPERATOR_DIF;}
-"_"                         {return TK_IDENTIFIER;}
+[_+|a-zA-Z+]+               {hashInsert(yytext); return TK_IDENTIFIER;}
 [0-9]+                      {printf("string: %s\n", yytext);return LIT_INTEGER;}
 '.'                         {printf("string: %s\n", yytext);return LIT_CHAR;}
 [0-9]+,[0-9]+               {printf("string: %s\n", yytext);return LIT_FLOAT;}
@@ -43,7 +43,8 @@ return                      {return KW_RETURN;}
 <COMMENTS>.                 {}
 
 %%
-
+#include "main.c"
+#include "hash.c"
 
 int yywrap(void){
     int x = 0;
