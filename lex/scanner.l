@@ -2,7 +2,7 @@
 #include "tokens.h"
 #include "hash.h"
 int lineNumber = 1;
-int isRunning = 1;
+int running = 1;
 
 int getLineNumber(void){
     return lineNumber;
@@ -27,11 +27,11 @@ return                      {return KW_RETURN;}
 ">="                        {return OPERATOR_GE;}
 "=="                        {return OPERATOR_EQ;}
 "!="                        {return OPERATOR_DIF;}
-[_+|a-zA-Z+]+               {hashInsert(yytext); return TK_IDENTIFIER;}
-[0-9]+                      {printf("string: %s\n", yytext);return LIT_INTEGER;}
-'.'                         {printf("string: %s\n", yytext);return LIT_CHAR;}
-[0-9]+,[0-9]+               {printf("string: %s\n", yytext);return LIT_FLOAT;}
-\"(\\.|[^"])*\"             {printf("string: %s\n", yytext);return LIT_STRING;}
+[_+|a-zA-Z+]+               {hashInsert(yytext);return TK_IDENTIFIER;}
+[0-9]+                      {hashInsert(yytext);return LIT_INTEGER;}
+'.'                         {hashInsert(yytext);return LIT_CHAR;}
+[0-9]+,[0-9]+               {hashInsert(yytext);return LIT_FLOAT;}
+\"(\\.|[^"])*\"             {hashInsert(yytext);return LIT_STRING;}
 [ \t]                       {}
 "\n"                        {lineNumber++;}
 [-+\;\(\)\[\]\{\}./<>&|~]+  {return yytext[0];}
@@ -46,9 +46,18 @@ return                      {return KW_RETURN;}
 #include "main.c"
 #include "hash.c"
 
+int isRunning(void){
+    return running;
+}
+
+void initMe(void){
+    hashInit();
+
+}
+
 int yywrap(void){
     int x = 0;
-    isRunning = 0;
+    running = 0;
     x = getLineNumber();
     printf("File has %d lines\n", x--);
     return 1;

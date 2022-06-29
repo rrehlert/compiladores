@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -502,14 +502,14 @@ char *yytext;
 #include "tokens.h"
 #include "hash.h"
 int lineNumber = 1;
-int isRunning = 1;
+int running = 1;
 
 int getLineNumber(void){
     return lineNumber;
 }
-#line 511 "lex.yy.c"
+#line 510 "lex.yy.c"
 
-#line 513 "lex.yy.c"
+#line 512 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENTS 1
@@ -730,7 +730,7 @@ YY_DECL
 #line 14 "scanner.l"
 
 
-#line 734 "lex.yy.c"
+#line 733 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -860,28 +860,28 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 30 "scanner.l"
-{hashInsert(yytext); return TK_IDENTIFIER;}
+{hashInsert(yytext);return TK_IDENTIFIER;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 31 "scanner.l"
-{printf("string: %s\n", yytext);return LIT_INTEGER;}
+{hashInsert(yytext);return LIT_INTEGER;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 32 "scanner.l"
-{printf("string: %s\n", yytext);return LIT_CHAR;}
+{hashInsert(yytext);return LIT_CHAR;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 33 "scanner.l"
-{printf("string: %s\n", yytext);return LIT_FLOAT;}
+{hashInsert(yytext);return LIT_FLOAT;}
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
 #line 34 "scanner.l"
-{printf("string: %s\n", yytext);return LIT_STRING;}
+{hashInsert(yytext);return LIT_STRING;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
@@ -936,7 +936,7 @@ YY_RULE_SETUP
 #line 45 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 940 "lex.yy.c"
+#line 939 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENTS):
 	yyterminate();
@@ -1947,9 +1947,18 @@ void yyfree (void * ptr )
 #include "main.c"
 #include "hash.c"
 
+int isRunning(void){
+    return running;
+}
+
+void initMe(void){
+    hashInit();
+
+}
+
 int yywrap(void){
     int x = 0;
-    isRunning = 0;
+    running = 0;
     x = getLineNumber();
     printf("File has %d lines\n", x--);
     return 1;
