@@ -33,6 +33,8 @@ HASH_NODE * hashInsert(char *text)
 {
 int address;
 HASH_NODE *newnode;
+if (newnode == hashFind(text))
+	return newnode;
 address = hashAddress(text);
 newnode = (HASH_NODE*) calloc(1,sizeof(HASH_NODE));
 newnode->text = (char*) calloc (strlen(text)+1,sizeof(char));
