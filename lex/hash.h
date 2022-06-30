@@ -1,3 +1,5 @@
+/*Ricardo Rodrigues Ehlert - 00313284
+Vitor Camargo de Moura - 00315212*/
 #define HASH_SIZE 997
 
 typedef struct hash_node{

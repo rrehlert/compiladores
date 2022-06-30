@@ -1,3 +1,5 @@
+/*Ricardo Rodrigues Ehlert - 00313284
+Vitor Camargo de Moura - 00315212*/
 %{
 #include "tokens.h"
 #include "hash.h"

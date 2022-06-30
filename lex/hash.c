@@ -1,4 +1,5 @@
-
+/*Ricardo Rodrigues Ehlert - 00313284
+Vitor Camargo de Moura - 00315212*/
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
