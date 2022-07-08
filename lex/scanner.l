@@ -29,7 +29,7 @@ return                      {return KW_RETURN;}
 ">="                        {return OPERATOR_GE;}
 "=="                        {return OPERATOR_EQ;}
 "!="                        {return OPERATOR_DIF;}
-[_+|a-zA-Z+]+               {hashInsert(yytext);return TK_IDENTIFIER;}
+[_a-zA-Z]+               {hashInsert(yytext);return TK_IDENTIFIER;}
 [0-9]+                      {hashInsert(yytext);return LIT_INTEGER;}
 '.'                         {hashInsert(yytext);return LIT_CHAR;}
 [0-9]+,[0-9]+               {hashInsert(yytext);return LIT_FLOAT;}
