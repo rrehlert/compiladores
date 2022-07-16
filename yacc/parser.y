@@ -26,29 +26,19 @@
 
 %%
 
-program : decl
+program : list
     ;
 
 list: dec ';' list
+    | func list
     |
     ;
 
-
-decl: dec ';' decl
-    |
+dec: type TK_IDENTIFIER '(' literal ')'
+    | type TK_IDENTIFIER '[' LIT_INTEGER ']' init
     ;
 
-resto: ';' dec resto
-    |
-    ;
-
-dec: KW_INT TK_IDENTIFIER '(' ')'
-    ;
-//    | type TK_IDENTIFIER '[' LIT_INTEGER ']' init
-//    | KW_INT TK_IDENTIFIER '(' ')' '{' LIT_INTEGER '}'
-
-/*
-body: '{' cmdl '}'
+func: type TK_IDENTIFIER '(' param ')' body
     ;
 
 type: KW_INT
@@ -56,46 +46,67 @@ type: KW_INT
     | KW_CHAR
     ;
 
+init: literal init
+    |
+    ;
+
 literal: LIT_INTEGER
     | LIT_FLOAT
     | LIT_CHAR
     ;
 
-init: LIT_INTEGER init
-    |
+body: '{' cmd cmdl '}'
     ;
 
-param: type TK_IDENTIFIER param
-    |
-    ;
-    */
-/*
-cmdl: ';' cmd
+cmdl: ';' cmd cmdl
     |
     ;
 
 cmd: '{' cmd cmdl '}'
+    | TK_IDENTIFIER ASSIGNMENT LIT_INTEGER
+    | TK_IDENTIFIER ASSIGNMENT TK_IDENTIFIER '(' args ')'
     | TK_IDENTIFIER ASSIGNMENT expr
     | TK_IDENTIFIER '[' expr ']' ASSIGNMENT expr
     | KW_READ TK_IDENTIFIER read
     | KW_PRINT printl
     | KW_RETURN expr
     | flux
+    |
+    ;
+
+args: TK_IDENTIFIER args
+    | LIT_CHAR args
+    | LIT_INTEGER args
+    | LIT_FLOAT args
+    |
+    ;
+
+flux:   KW_IF '(' expr ')' cmd
+    |   KW_IF '(' expr ')' cmd KW_ELSE cmd
+    |   KW_WHILE '(' expr ')' body
     ;
 
 read: '[' expr ']'
     |
     ;
 
-printl: LIT_STRING print
-    | expr print
+
+printl: print printl
+    |
     ;
 
-print: printl
+
+print: LIT_STRING
+    | expr
+    ;
+
+
+param: type TK_IDENTIFIER param
     |
     ;
 
 expr: LIT_INTEGER
+    | TK_IDENTIFIER '[' expr ']'
     | TK_IDENTIFIER
     | expr '+' expr
     | expr '-' expr
@@ -113,16 +124,11 @@ expr: LIT_INTEGER
     | '(' expr ')'
     ;
 
-flux:   KW_IF '(' expr ')' cmd
-    |   KW_IF '(' expr ')' cmd KW_ELSE cmd
-    |   KW_WHILE '(' expr ')' cmd
-    ;
-*/
 
 %%
 
 
 int yyerror(){
-    fprintf(stderr, "Syntax error at line %d.\n", getLineNumber());
+    fprintf(stderr, " \n Syntax error at line %d.\n", getLineNumber()+1);
     exit(3);
 }

@@ -36,7 +36,7 @@ return                      {return KW_RETURN;}
 \"(\\.|[^"])*\"             {hashInsert(yytext);return LIT_STRING;}
 [ \t]                       {}
 "\n"                        {lineNumber++;}
-[-+\;\(\)\[\]\{\}./<>&|~]+  {return yytext[0];}
+[-+\;\(\)\[\]\{\}./<>&|~]   {return yytext[0];}
 ##(.)*\n                    {}
 \\#                         {BEGIN COMMENTS;}
 .                           {return TOKEN_ERROR;}
@@ -65,3 +65,4 @@ int yywrap(void){
     printf("File has %d lines\n", x--);
     return 1;
 }
+
