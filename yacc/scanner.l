@@ -37,7 +37,7 @@ return                      {return KW_RETURN;}
 [ \t]                       {}
 "\n"                        {lineNumber++;}
 [-+\;\(\)\[\]\{\}./<>&|~]   {return yytext[0];}
-##(.)*\n                    {}
+##(.)*                    {}
 \\#                         {BEGIN COMMENTS;}
 .                           {return TOKEN_ERROR;}
 <COMMENTS>#\\               {BEGIN INITIAL;}

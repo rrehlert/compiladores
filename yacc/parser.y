@@ -106,6 +106,8 @@ param: type TK_IDENTIFIER param
     ;
 
 expr: LIT_INTEGER
+    | LIT_FLOAT
+    | LIT_CHAR
     | TK_IDENTIFIER '[' expr ']'
     | TK_IDENTIFIER
     | expr '+' expr
@@ -129,6 +131,6 @@ expr: LIT_INTEGER
 
 
 int yyerror(){
-    fprintf(stderr, " \n Syntax error at line %d.\n", getLineNumber()+1);
+    fprintf(stderr, " \n Syntax error at line %d.\n", getLineNumber());
     exit(3);
 }
