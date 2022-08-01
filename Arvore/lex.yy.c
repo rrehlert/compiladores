@@ -496,17 +496,18 @@ char *yytext;
 /*Ricardo Rodrigues Ehlert - 00313284
 Vitor Camargo de Moura - 00315212*/
 #line 4 "scanner.l"
+#include "ast.h"
 #include "y.tab.h"
-#include "hash.h"
+
 int lineNumber = 1;
 int running = 1;
 
 int getLineNumber(void){
     return lineNumber;
 }
-#line 507 "lex.yy.c"
+#line 508 "lex.yy.c"
 
-#line 509 "lex.yy.c"
+#line 510 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENTS 1
@@ -724,10 +725,10 @@ YY_DECL
 		}
 
 	{
-#line 16 "scanner.l"
+#line 17 "scanner.l"
 
 
-#line 730 "lex.yy.c"
+#line 731 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -786,153 +787,153 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "scanner.l"
+#line 19 "scanner.l"
 {return KW_CHAR;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "scanner.l"
+#line 20 "scanner.l"
 {return KW_INT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 20 "scanner.l"
+#line 21 "scanner.l"
 {return KW_FLOAT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "scanner.l"
+#line 22 "scanner.l"
 {return KW_IF;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "scanner.l"
+#line 23 "scanner.l"
 {return KW_ELSE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "scanner.l"
+#line 24 "scanner.l"
 {return KW_WHILE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 24 "scanner.l"
+#line 25 "scanner.l"
 {return KW_READ;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 25 "scanner.l"
+#line 26 "scanner.l"
 {return KW_PRINT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 26 "scanner.l"
+#line 27 "scanner.l"
 {return KW_RETURN;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "scanner.l"
+#line 28 "scanner.l"
 {return ASSIGNMENT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "scanner.l"
+#line 29 "scanner.l"
 {return OPERATOR_LE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 29 "scanner.l"
+#line 30 "scanner.l"
 {return OPERATOR_GE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 30 "scanner.l"
+#line 31 "scanner.l"
 {return OPERATOR_EQ;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 31 "scanner.l"
+#line 32 "scanner.l"
 {return OPERATOR_DIF;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 32 "scanner.l"
+#line 33 "scanner.l"
 {hashInsert(yytext);return TK_IDENTIFIER;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 33 "scanner.l"
-{hashInsert(yytext);return LIT_INTEGER;}
+#line 34 "scanner.l"
+{yylval.symbol = hashInsert(yytext); return LIT_INTEGER;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 34 "scanner.l"
+#line 35 "scanner.l"
 {hashInsert(yytext);return LIT_CHAR;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 35 "scanner.l"
+#line 36 "scanner.l"
 {hashInsert(yytext);return LIT_FLOAT;}
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
-#line 36 "scanner.l"
+#line 37 "scanner.l"
 {hashInsert(yytext);return LIT_STRING;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 37 "scanner.l"
+#line 38 "scanner.l"
 {}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 38 "scanner.l"
+#line 39 "scanner.l"
 {lineNumber++;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 40 "scanner.l"
 {return yytext[0];}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 40 "scanner.l"
+#line 41 "scanner.l"
 {}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 41 "scanner.l"
+#line 42 "scanner.l"
 {BEGIN COMMENTS;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 43 "scanner.l"
 {return TOKEN_ERROR;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 43 "scanner.l"
+#line 44 "scanner.l"
 {BEGIN INITIAL;}
 	YY_BREAK
 case 27:
 /* rule 27 can match eol */
 YY_RULE_SETUP
-#line 44 "scanner.l"
+#line 45 "scanner.l"
 {lineNumber++;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 45 "scanner.l"
+#line 46 "scanner.l"
 {}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 48 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 935 "lex.yy.c"
+#line 936 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENTS):
 	yyterminate();
@@ -1938,11 +1939,12 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 47 "scanner.l"
+#line 48 "scanner.l"
 
-#include "y.tab.c"
 #include "main.c"
 #include "hash.c"
+#include "y.tab.c"
+#include "ast.c"
 
 int isRunning(void){
     return running;

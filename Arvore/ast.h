@@ -5,10 +5,10 @@
 #ifndef UNTITLED_AST_H
 #define UNTITLED_AST_H
 
-#include "hash.h";
-#define MAXFILHOS 4;
-#define AST_SYMBOL 1;
-#define AST_ADD 2;
+#include "hash.h"
+#define MAXFILHOS 4
+#define AST_SYMBOL 1
+#define AST_ADD 2
 
 typedef struct astnode{
     int type;

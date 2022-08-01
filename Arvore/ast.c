@@ -3,7 +3,7 @@
 
 AST* astCreate(int type, HASH_NODE *symbol, AST*filho0, AST*filho1, AST*filho2, AST*filho3){
 	AST*newnode;
-	newnode = (AST*) calloc(1,sizeoff(AST));
+	newnode = (AST*) calloc(1,sizeof(AST));
 	newnode ->type = type;
 	newnode->symbol = symbol;
 	newnode->filho[0] = filho0;
@@ -18,7 +18,7 @@ void astPrint (AST* node, int level) {
     if(!node)
         return;
     for (i=0; i<level; ++i){
-        fprintf(stderr, ' ');
+        fprintf(stderr, " ");
     }
     fprintf(stderr,"AST ");
     switch (node->type) {
