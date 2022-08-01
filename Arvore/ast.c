@@ -28,12 +28,14 @@ void astPrint (AST* node, int level) {
         case AST_ADD:
             fprintf(stderr,"AST_ADD");
             break;
+        case AST_LCMD:
+            fprintf(stderr,"AST_ADD");
+            break;
     }
     if (node->symbol)
         fprintf(stderr,"%s\n", node->symbol->text);
     else
-        fprintf(stderr, ", 0");
-
+        fprintf(stderr, ", 0\n");
     // imprimir filhos
     for (i=0; i<MAXFILHOS; ++i)
         astPrint(node->filho[i],level+1);

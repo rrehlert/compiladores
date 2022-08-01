@@ -9,6 +9,7 @@
 #define MAXFILHOS 4
 #define AST_SYMBOL 1
 #define AST_ADD 2
+#define AST_LCMD 3
 
 typedef struct astnode{
     int type;

@@ -1,3 +1,9 @@
+%{
+
+    #include "ast.h"
+
+%}
+
 %union
 {
     HASH_NODE *symbol;
@@ -76,15 +82,15 @@ literal: LIT_INTEGER
     | LIT_CHAR
     ;
 
-body: '{' cmd cmdl '}' { astPrint($2, 0); }
+body: '{' cmd cmdl '}' { astPrint($3, 0); }
     ;
 
-cmdl: ';' cmd cmdl     { $$ = 0; }
+cmdl: ';' cmd cmdl     { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0); }
     |                  { $$ = 0; }
     ;
 
-cmd: '{' cmd cmdl '}'       { $$ = 0; }
-    | TK_IDENTIFIER ASSIGNMENT LIT_INTEGER      { $$ = 0; }
+cmd: '{' cmd cmdl '}'       { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0); }
+    | TK_IDENTIFIER ASSIGNMENT LIT_INTEGER      { $$ = astCreate(AST_SYMBOL, $1, $3, 0, 0, 0); }
     | TK_IDENTIFIER ASSIGNMENT TK_IDENTIFIER '(' args ')'       { $$ = 0; }
     | TK_IDENTIFIER ASSIGNMENT expr         { $$ = 0; }
     | TK_IDENTIFIER '[' expr ']' ASSIGNMENT expr        { $$ = 0; }
