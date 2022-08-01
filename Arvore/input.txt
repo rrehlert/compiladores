@@ -1,0 +1,11 @@
+int j (2);
+char c ('a');
+int v [3] 'a' 0 0;
+int main (){
+    a <- 7;
+    a <- 8;
+    }
+int main (){
+    g <- 12
+    }
+
