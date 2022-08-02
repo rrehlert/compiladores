@@ -1,5 +1,14 @@
 /*Ricardo Rodrigues Ehlert - 00313284
 Vitor Camargo de Moura - 00315212*/
+#include <stdio.h>
+#include "hash.h"
+
+
+
+extern FILE *yyin;
+int yyparse();
+
+
 int isRunning(void);
 int main(int argc, char ** argv){
    	hashInit();

@@ -3,6 +3,9 @@ Vitor Camargo de Moura - 00315212*/
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "hash.h"
+
+HASH_NODE *Table[HASH_SIZE];
 
 void hashInit(void)
 {

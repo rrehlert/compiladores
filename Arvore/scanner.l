@@ -1,8 +1,15 @@
 /*Ricardo Rodrigues Ehlert - 00313284
 Vitor Camargo de Moura - 00315212*/
 %{
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include "ast.h"
 #include "y.tab.h"
+
+
+#endif
+
 
 int lineNumber = 1;
 int running = 1;
@@ -30,11 +37,11 @@ return                      {return KW_RETURN;}
 ">="                        {return OPERATOR_GE;}
 "=="                        {return OPERATOR_EQ;}
 "!="                        {return OPERATOR_DIF;}
-[_a-zA-Z]+                  {hashInsert(yytext);return TK_IDENTIFIER;}
-[0-9]+                      {yylval.symbol = hashInsert(yytext); return LIT_INTEGER;}
-'.'                         {hashInsert(yytext);return LIT_CHAR;}
-[0-9]+,[0-9]+               {hashInsert(yytext);return LIT_FLOAT;}
-\"(\\.|[^"])*\"             {hashInsert(yytext);return LIT_STRING;}
+[_a-zA-Z]+                  {yylval.symbol = hashInsert(yytext);return TK_IDENTIFIER;}
+[0-9]+                      {yylval.symbol = hashInsert(yytext);return LIT_INTEGER;}
+'.'                         {yylval.symbol = hashInsert(yytext);return LIT_CHAR;}
+[0-9]+,[0-9]+               {yylval.symbol = hashInsert(yytext);return LIT_FLOAT;}
+\"(\\.|[^"])*\"             {yylval.symbol = hashInsert(yytext);return LIT_STRING;}
 [ \t]                       {}
 "\n"                        {lineNumber++;}
 [-+\;\(\)\[\]\{\}./<>&|~]   {return yytext[0];}
@@ -46,10 +53,6 @@ return                      {return KW_RETURN;}
 <COMMENTS>.                 {}
 
 %%
-#include "main.c"
-#include "hash.c"
-#include "y.tab.c"
-#include "ast.c"
 
 int isRunning(void){
     return running;

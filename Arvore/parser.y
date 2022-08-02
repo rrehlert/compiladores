@@ -1,7 +1,8 @@
 %{
-
     #include "ast.h"
-
+    int yyerror ();
+    int getLineNumber();
+    int yylex();
 %}
 
 %union
@@ -43,13 +44,14 @@
 %type<AST> body
 %type<AST> cmd
 %type<AST> cmdl
+%type<AST> literal
 
 
-%left '.' '&'
-%left OPERATOR_LE OPERATOR_GE OPERATOR_DIF OPERATOR_EQ
+%left '&' '|' '~'
+%left OPERATOR_DIF OPERATOR_EQ
+%left OPERATOR_LE OPERATOR_GE '<' '>'
 %left '+' '-'
-%left '*' '/'
-
+%left '.' '/'
 
 %%
 
@@ -65,7 +67,7 @@ dec: type TK_IDENTIFIER '(' literal ')'
     | type TK_IDENTIFIER '[' LIT_INTEGER ']' init
     ;
 
-func: type TK_IDENTIFIER '(' param ')' body
+func: type TK_IDENTIFIER '(' param ')' body { astPrint ($6,0);}
     ;
 
 type: KW_INT
@@ -77,22 +79,21 @@ init: literal init
     |
     ;
 
-literal: LIT_INTEGER
-    | LIT_FLOAT
-    | LIT_CHAR
+literal: LIT_INTEGER    { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
+    | LIT_FLOAT         { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
+    | LIT_CHAR          { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
     ;
 
-body: '{' cmd cmdl '}' { astPrint($3, 0); }
+body: '{' cmd cmdl '}' { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0);}
     ;
 
-cmdl: ';' cmd cmdl     { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0); }
+cmdl: ';' cmd cmdl     { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0);}
     |                  { $$ = 0; }
     ;
 
 cmd: '{' cmd cmdl '}'       { $$ = astCreate(AST_LCMD, 0, $2, $3, 0, 0); }
-    | TK_IDENTIFIER ASSIGNMENT LIT_INTEGER      { $$ = astCreate(AST_SYMBOL, $1, $3, 0, 0, 0); }
     | TK_IDENTIFIER ASSIGNMENT TK_IDENTIFIER '(' args ')'       { $$ = 0; }
-    | TK_IDENTIFIER ASSIGNMENT expr         { $$ = 0; }
+    | TK_IDENTIFIER ASSIGNMENT expr         { $$ = astCreate(AST_ASSIGN, $1, $3, 0, 0, 0);}
     | TK_IDENTIFIER '[' expr ']' ASSIGNMENT expr        { $$ = 0; }
     | KW_READ TK_IDENTIFIER read        { $$ = 0; }
     | KW_PRINT printl       { $$ = 0; }
@@ -135,8 +136,8 @@ param: type TK_IDENTIFIER param
 expr: LIT_INTEGER           { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
     | LIT_FLOAT             { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
     | LIT_CHAR              { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
-    | TK_IDENTIFIER '[' expr ']'    { $$ = 0; }
-    | TK_IDENTIFIER                 { $$ = 0; }
+    | TK_IDENTIFIER '[' expr ']'    { $$ = astCreate(AST_SYMBOL, $1, $3, 0, 0, 0); }
+    | TK_IDENTIFIER                 { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
     | expr '+' expr                 { $$ = astCreate(AST_ADD, 0, $1, $3, 0, 0); }
     | expr '-' expr                 { $$ = 0; }
     | expr '.' expr                 { $$ = 0; }
@@ -150,7 +151,7 @@ expr: LIT_INTEGER           { $$ = astCreate(AST_SYMBOL, $1, 0, 0, 0, 0); }
     | expr '&' expr
     | expr '|' expr
     | expr '~' expr
-    | '(' expr ')'          { $$ = 0; }
+    | '(' expr ')'          { $$ = $2; }
     ;
 
 
