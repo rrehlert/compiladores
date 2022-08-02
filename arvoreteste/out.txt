@@ -1,0 +1,1 @@
+ int  i ;  float  f ( 2,5 );  int  main (){ a [ 0 ]<-;  a [ a  -  i ]<-;  a [ 5 ]<-;  v [ a ]<- 55 ;  print  a ;  print  "Digite um numero: \n" ;  read  a ;  print  "Digite mais um numero: \n" ;  read  v [ a ];  WHILE ( i  <  10 ){ i [ incn ( i  1 )]<-;  a [ incn ( a  a )]<-; ; }; ; };  int  incn ( int  x  int  n ){ return  x  +  n ; }; 
