@@ -860,28 +860,28 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{yylval.symbol = hashInsert(yytext);return TK_IDENTIFIER;}
+{yylval.symbol = hashInsert(yytext,SYMBOL_IDENTIFIER);return TK_IDENTIFIER;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 36 "scanner.l"
-{yylval.symbol = hashInsert(yytext);return LIT_INTEGER;}
+{yylval.symbol = hashInsert(yytext,SYMBOL_INTEGER);return LIT_INTEGER;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 37 "scanner.l"
-{yylval.symbol = hashInsert(yytext);return LIT_CHAR;}
+{yylval.symbol = hashInsert(yytext,SYMBOL_CHAR);return LIT_CHAR;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 38 "scanner.l"
-{yylval.symbol = hashInsert(yytext);return LIT_FLOAT;}
+{yylval.symbol = hashInsert(yytext,SYMBOL_FLOAT);return LIT_FLOAT;}
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
 #line 39 "scanner.l"
-{yylval.symbol = hashInsert(yytext);return LIT_STRING;}
+{yylval.symbol = hashInsert(yytext,SYMBOL_STRING);return LIT_STRING;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
@@ -1947,6 +1947,7 @@ void yyfree (void * ptr )
 #include "main.c"
 #include "hash.c"
 #include "ast.c"
+#include "semantic.c"
 
 
 int isRunning(void){
