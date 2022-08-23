@@ -19,6 +19,7 @@ Vitor Camargo de Moura - 00315212*/
 #define DATATYPE_FLOAT 3
 #define DATATYPE_CHAR 2
 #define DATATYPE_STRING 4
+#define DATATYPE_BOOL 5
 
 typedef struct hash_node{
 int type;

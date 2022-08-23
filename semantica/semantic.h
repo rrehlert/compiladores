@@ -8,6 +8,7 @@
 
 void set_declaration(AST *node);
 void check_declaration();
+void set_nodes(AST *node);
 int get_datatype(AST *node);
 
 #endif //UNTITLED_SEMANTIC_H

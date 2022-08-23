@@ -53,6 +53,7 @@
 
 typedef struct astnode{
     int type;
+    int datatype;
     struct astnode* filho[MAXFILHOS];
     HASH_NODE* symbol;
 }AST;

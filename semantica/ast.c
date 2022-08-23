@@ -176,7 +176,7 @@ void astPrint (AST* node, int level) {
             break;
     }
     if (node->symbol)
-        fprintf(stderr,"%s\n", node->symbol->text);
+        fprintf(stderr," %s\n", node->symbol->text);
     else
         fprintf(stderr, ", 0\n");
 

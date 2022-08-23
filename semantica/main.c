@@ -24,8 +24,10 @@ int main(int argc, char ** argv){
 
 	yyparse();
 	AST* no = return_node();
+
 	set_declaration(no);
 	check_declaration();
+	set_nodes(no);
 	astPrint(no,0);
 	FILE *out;
 	out=fopen(argv[2],"w");

@@ -5,11 +5,58 @@
 
 int SemanticErrors = 0;
 
+
+
+
+void set_nodes(AST *node){
+	if(!node)
+		return;
+	for (int i=0; i<MAXFILHOS; ++i)
+		set_nodes(node->filho[i]);
+
+	switch (node->type){
+		case AST_SYMBOL:
+			node->datatype = node->symbol->type;
+			break;
+		case AST_ADD:
+		case AST_SUB:
+		case AST_MULT:
+		case AST_DIV:
+			if (node->filho[0]->datatype == node->filho[1]->datatype)
+				node->datatype = node->filho[0]->datatype;
+			else{
+				fprintf(stderr, "Semantic ERROR: Operators mismatch\n");
+				++ SemanticErrors;
+			}
+			break;
+		case AST_IDENT:
+			node->datatype = node->symbol->datatype;
+			break;
+		case AST_LESS:
+		case AST_BIG:
+		case AST_OPLE:
+		case AST_OPGE:
+		case AST_OPEQ:
+		case AST_OPDIF:
+		case AST_AND:
+		case AST_OR:
+		case AST_NOT:
+			if (node->filho[0]->datatype == node->filho[1]->datatype)
+				node->datatype = DATATYPE_BOOL;
+			else{
+				fprintf(stderr, "Semantic ERROR: Operators mismatch\n");
+				++ SemanticErrors;
+			}
+			break;
+
+	}
+}
+
 void set_declaration(AST *node){
 
 	if(!node)
     		return;
-	
+
 	switch (node->type){
 		case AST_DEC:
 			if (node->symbol->type != SYMBOL_IDENTIFIER){
@@ -51,25 +98,7 @@ void set_declaration(AST *node){
 			node->symbol->type = SYMBOL_FUNCTION;
 			node->symbol->datatype = get_datatype(node->filho[0]);
 			break;
-		case AST_ASSIGN:
-			if (node->symbol->datatype != node->filho[0]->symbol->type){
-				fprintf(stderr, "Semantic ERROR: Wrong type Assignement with variable %s\n",node->symbol->text);
-				++ SemanticErrors;
-			}
-			break;
-		case AST_FASSIGN:
-			if (node->symbol->type != SYMBOL_IDENTIFIER){
-				fprintf(stderr, "Semantic ERROR: function %s already declared\n",node->symbol->text);
-				++ SemanticErrors;
-				}
-			node->symbol->type = SYMBOL_FUNCTION;
-			node->symbol->datatype = get_datatype(node->filho[0]);
-			if (node->symbol->datatype != node->filho[0]->symbol->type){
-				fprintf(stderr, "Semantic ERROR: variable %s declared with wrong type\n",node->symbol->text);
-				++ SemanticErrors;
-			}
-			break;
-
+		
 }
 			
 
