@@ -78,8 +78,12 @@ void set_nodes(AST *node){
 					fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
 					++ SemanticErrors;
 				}
-				break;
 			}
+			if ((node->filho[1]) && (node->symbol->type != SYMBOL_VECTOR)){
+				fprintf(stderr, "Semantic ERROR: Variable %s used with unexpected [int] \n", node->symbol->text);
+				++ SemanticErrors;
+				}
+
 			if (node->symbol->datatype != node->filho[0]->datatype){
 				fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
 				++ SemanticErrors;
@@ -90,6 +94,14 @@ void set_nodes(AST *node){
 		case AST_PRINT:
 			break;
 		case AST_RETURN:
+			break;
+		case AST_IF:
+		case AST_IFELSE:
+		case AST_WHILE:
+			if(node->filho[0]->datatype != DATATYPE_BOOL){
+				fprintf(stderr, "Semantic ERROR: Flux expression must be type Bool\n");
+				++ SemanticErrors;
+			}
 			break;
 
 	}
@@ -140,8 +152,31 @@ void set_declaration(AST *node){
 				}
 			node->symbol->type = SYMBOL_FUNCTION;
 			node->symbol->datatype = get_datatype(node->filho[0]);
+/*			if (node->filho[1]){
+			AST* param;
+			param = node->filho[1];
+			while(param){
+			if (filho->filho[0]->symbol->type != node->symbol->datatype){
+						fprintf(stderr, "Semantic ERROR: vector %s declared with wrong type\n",node->symbol->text);
+					++ SemanticErrors;
+					}			
+			param = param->filho[1];							
+}
+			
+			}
+*/			break;
+		case AST_PARAM:
+			if (node->symbol->type != SYMBOL_IDENTIFIER){	
+				fprintf(stderr, "Semantic ERROR: variable %s already declared\n",node->symbol->text);
+				++ SemanticErrors;
+				}
+			else{	
+			node->symbol->type = SYMBOL_VARIABLE;
+			node->symbol->datatype = get_datatype(node->filho[0]);
+			node->datatype = node->symbol->type;
+			}
+
 			break;
-		
 }
 			
 
