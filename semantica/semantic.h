@@ -4,10 +4,7 @@
 #define UNTITLED_SEMANTIC_H
 
 
-#include "hash.h"
 #include "ast.h"
-
-int SemanticErrors = 0;
 
 void set_declaration(AST *node);
 void check_declaration();

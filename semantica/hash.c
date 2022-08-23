@@ -5,6 +5,8 @@ Vitor Camargo de Moura - 00315212*/
 #include <stdio.h>
 #include "hash.h"
 
+HASH_NODE *Table[HASH_SIZE];
+
 void hashInit(void)
 {
 int i;
@@ -53,7 +55,7 @@ int i;
 HASH_NODE *node;
 for (i=0;i<HASH_SIZE;i++)
 	for (node=Table[i];node;node=node->next)
-		printf("Table[%d] has %s of type %d and is %d\n",i,node->text,node->type,node->datatype);
+		printf("Table[%d] has %s of type %d and datatype %d\n",i,node->text,node->type,node->datatype);
 }
 
 int hash_check_undeclared(){

@@ -1,8 +1,9 @@
 %{
-
-#include "hash.h"
+#include <stdlib.h>
 #include "ast.h"
 int yyerror();
+int yylex();
+int getLineNumber();
 
 AST* raiz;
 	
@@ -60,6 +61,7 @@ AST* raiz;
 %type<AST> printl
 %type<AST> print
 %type<AST> param
+%type<AST> array
 
 
 
@@ -81,7 +83,7 @@ list: dec ';' list									{ $$ = astCreate(AST_LIST, 0, $1, $3, 0, 0);}
     ;
 
 dec: type TK_IDENTIFIER '(' literal ')'					{ $$ = astCreate(AST_DECP, $2, $1, $4, 0, 0);}
-    | type TK_IDENTIFIER init							{ $$ = astCreate(AST_DEC, $2, $1, $3, 0, 0);}
+    | type TK_IDENTIFIER array							{ $$ = astCreate(AST_DEC, $2, $1, $3, 0, 0);}
     ;
 
 func: type TK_IDENTIFIER '(' param ')' body 			{ $$ = astCreate(AST_FUNC, $2, $1, $4, $6, 0);}
@@ -92,8 +94,10 @@ type: KW_INT				{ $$ = astCreate(AST_INT, 0, 0, 0, 0, 0);}
     | KW_CHAR				{ $$ = astCreate(AST_CHAR, 0, 0, 0, 0, 0);}
     ;
 
+array: '[' LIT_INTEGER ']' init		{ $$ = astCreate(AST_INIT,$2,$4,0,0,0);}
+    ;
+
 init: literal init				{ $$ = astCreate(AST_INIT,0,$1,$2,0,0); }
-    |'[' LIT_INTEGER ']' init		{ $$ = astCreate(AST_INIT,$2,$4,0,0,0);}
     |							{ $$ = 0; }
     ;
 

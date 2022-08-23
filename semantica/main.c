@@ -2,9 +2,11 @@
 Vitor Camargo de Moura - 00315212*/
 
 #include "semantic.h"
-#include "ast.h"
 #include <stdio.h>
+#include <stdlib.h>
 extern AST* return_node();
+extern FILE *yyin;
+int yyparse();
 
 int isRunning(void);
 int main(int argc, char ** argv){

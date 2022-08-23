@@ -8,15 +8,16 @@ Vitor Camargo de Moura - 00315212*/
 
 #define SYMBOL_IDENTIFIER 1
 #define SYMBOL_INTEGER 2
-#define SYMBOL_CHAR 3
-#define SYMBOL_FLOAT 4
-#define SYMBOL_STRING 5
-#define SYMBOL_FUNCTION 6
-#define SYMBOL_VARIABLE 7
+#define SYMBOL_CHAR 2
+#define SYMBOL_FLOAT 3
+#define SYMBOL_STRING 4
+#define SYMBOL_FUNCTION 5
+#define SYMBOL_VARIABLE 6
+#define SYMBOL_VECTOR 7
 
-#define DATATYPE_INT 1
-#define DATATYPE_FLOAT 2
-#define DATATYPE_CHAR 3
+#define DATATYPE_INT 2
+#define DATATYPE_FLOAT 3
+#define DATATYPE_CHAR 2
 #define DATATYPE_STRING 4
 
 typedef struct hash_node{
@@ -25,7 +26,7 @@ int datatype;
 char *text;
 struct hash_node *next;
 } HASH_NODE;
-HASH_NODE *Table[HASH_SIZE];
+
 void hashInit(void);
 int hashAddress(char *text);
 HASH_NODE * hashInsert(char *text, int type);

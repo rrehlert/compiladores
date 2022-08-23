@@ -1,8 +1,6 @@
 /*Ricardo Rodrigues Ehlert - 00313284
 Vitor Camargo de Moura - 00315212*/
 %{
-
-#include "hash.h"
 #include "ast.h"
 #include "y.tab.h"
 
@@ -48,12 +46,6 @@ return                      {return KW_RETURN;}
 <COMMENTS>.                 {}
 
 %%
-#include "y.tab.c"
-#include "main.c"
-#include "hash.c"
-#include "ast.c"
-#include "semantic.c"
-
 
 int isRunning(void){
     return running;

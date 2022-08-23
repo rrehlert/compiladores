@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "ast.h"
 
 AST* astCreate(int type, HASH_NODE *symbol, AST*filho0, AST*filho1, AST*filho2, AST*filho3){

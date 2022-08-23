@@ -2,7 +2,8 @@
 // Created by vitor on 31/07/2022.
 //
 
-
+#include <stdio.h>
+#include <stdlib.h>
 #ifndef UNTITLED_AST_H
 #define UNTITLED_AST_H
 
