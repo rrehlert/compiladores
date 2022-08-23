@@ -4,9 +4,11 @@ Vitor Camargo de Moura - 00315212*/
 #include "semantic.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 extern AST* return_node();
 extern FILE *yyin;
 int yyparse();
+
 
 int isRunning(void);
 int main(int argc, char ** argv){
@@ -23,11 +25,16 @@ int main(int argc, char ** argv){
 	int yytok;
 
 	yyparse();
+	
+	
 	AST* no = return_node();
-
 	set_declaration(no);
 	check_declaration();
 	set_nodes(no);
+	
+	int x = get_errors();
+	if (x>0)
+		exit(4);
 	astPrint(no,0);
 	FILE *out;
 	out=fopen(argv[2],"w");

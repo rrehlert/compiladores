@@ -6,9 +6,11 @@
 
 #include "ast.h"
 
+
 void set_declaration(AST *node);
 void check_declaration();
 void set_nodes(AST *node);
 int get_datatype(AST *node);
+int get_errors();
 
 #endif //UNTITLED_SEMANTIC_H

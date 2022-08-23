@@ -1,6 +1,7 @@
 // tabela semantica Ricardo Ehlert e Vitor Camargo
 
 
+
 #include "semantic.h"
 
 int SemanticErrors = 0;
@@ -15,9 +16,21 @@ void set_nodes(AST *node){
 		set_nodes(node->filho[i]);
 
 	switch (node->type){
+
 		case AST_SYMBOL:
 			node->datatype = node->symbol->type;
 			break;
+
+		case AST_IDENT:
+			if(node->filho[0])
+				if (node->filho[0]->datatype != DATATYPE_INT){
+					fprintf(stderr, "Semantic ERROR: Vector expect int inside [] \n");
+					++ SemanticErrors;
+					}
+
+			node->datatype = node->symbol->datatype;
+			break;
+
 		case AST_ADD:
 		case AST_SUB:
 		case AST_MULT:
@@ -29,9 +42,7 @@ void set_nodes(AST *node){
 				++ SemanticErrors;
 			}
 			break;
-		case AST_IDENT:
-			node->datatype = node->symbol->datatype;
-			break;
+
 		case AST_LESS:
 		case AST_BIG:
 		case AST_OPLE:
@@ -47,6 +58,38 @@ void set_nodes(AST *node){
 				fprintf(stderr, "Semantic ERROR: Operators mismatch\n");
 				++ SemanticErrors;
 			}
+			break;
+
+		case AST_FASSIGN:
+			node->datatype = node->symbol->datatype;
+			break;
+		case AST_ASSIGN:
+			if ((!node->filho[1]) && (node->symbol->type == SYMBOL_VECTOR)){
+				fprintf(stderr, "Semantic ERROR: Vector %s expect [int] \n", node->symbol->text);
+				++ SemanticErrors;
+				}
+			if (node->filho[1]){
+				if (node->filho[1]->datatype != DATATYPE_INT){
+					fprintf(stderr, "Semantic ERROR: Vector %s expect int inside [] \n", node->symbol->text);
+					++ SemanticErrors;
+				}
+
+				if (node->symbol->datatype != node->filho[0]->datatype){
+					fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
+					++ SemanticErrors;
+				}
+				break;
+			}
+			if (node->symbol->datatype != node->filho[0]->datatype){
+				fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
+				++ SemanticErrors;
+			}
+			break;
+		case AST_READ:
+			break;
+		case AST_PRINT:
+			break;
+		case AST_RETURN:
 			break;
 
 	}
@@ -117,4 +160,8 @@ int get_datatype(AST* node){
 		case AST_FLOAT: return DATATYPE_FLOAT;
 		case AST_CHAR: return DATATYPE_CHAR;
 	}
+}
+
+int get_errors(){
+	return SemanticErrors;
 }
