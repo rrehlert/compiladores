@@ -5,11 +5,24 @@
 #include "ast.h"
 
 #define TAC_SYMBOL 1
-#define TAC_ADD 2
-#define TAC_SUB 3
+
+
 #define TAC_ASSIGN 4
 #define TAC_JFALSE 5
 #define TAC_LABEL 6
+#define TAC_JMP 7
+#define TAC_OR 8
+#define TAC_AND 9
+#define TAC_OPDIF 10
+#define TAC_OPEQ 11
+#define TAC_OPGE 12 
+#define TAC_OPLE 13
+#define TAC_BIG 14
+#define TAC_LESS 15
+#define TAC_DIV 16
+#define TAC_MULT 17
+#define TAC_SUB 18
+#define TAC_ADD 19
 
 
 typedef struct tac_node

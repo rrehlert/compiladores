@@ -20,11 +20,25 @@ void tacPrint(TAC* tac){
     switch(tac->type)
     {
         case TAC_SYMBOL:fprintf(stderr,"TAC_SYMBOL"); break;
+
         case TAC_ADD:fprintf(stderr,"TAC_ADD"); break;
         case TAC_SUB:fprintf(stderr,"TAC_SUB"); break;
-        case TAC_ASSIGN:fprintf(stderr,"TAC_ASSIGN"); break;
+	    case TAC_OR:fprintf(stderr,"TAC_OR"); break;
+		case TAC_AND:fprintf(stderr,"TAC_AND"); break;
+		case TAC_OPDIF:fprintf(stderr,"TAC_OPDIF"); break;
+		case TAC_OPEQ:fprintf(stderr,"TAC_OPEQ"); break;
+		case TAC_OPGE:fprintf(stderr,"TAC_OPGE"); break;
+		case TAC_OPLE:fprintf(stderr,"TAC_OPLE"); break;
+		case TAC_BIG:fprintf(stderr,"TAC_BIG"); break;
+		case TAC_LESS:fprintf(stderr,"TAC_LESS"); break;
+		case TAC_DIV:fprintf(stderr,"TAC_DIV"); break;
+		case TAC_MULT:fprintf(stderr,"TAC_MULT"); break;
+
+		case TAC_ASSIGN:fprintf(stderr,"TAC_ASSIGN"); break;
         case TAC_JFALSE:fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL:fprintf(stderr,"TAC_LABEL"); break;
+	    case TAC_JMP:fprintf(stderr,"TAC_JMP"); break;
+
         default:fprintf(stderr,"TAC_UNKNOWN"); break;
     }
 fprintf(stderr,",%s", (tac->res)?tac->res->text:"0");
@@ -75,6 +89,58 @@ TAC* makeIf(TAC* code0, TAC* code1){
     return tacJoin(jumptac,labeltac);
 }
 
+TAC* makeIfElse(TAC* code0, TAC* code1, TAC* code2){
+    TAC* jumptac = 0;
+    TAC* finallabeltac = 0;
+    TAC* elselabeltac = 0;
+	TAC* elsejumptac = 0;
+    HASH_NODE* newlabel = 0;
+    newlabel = makeLabel();
+	HASH_NODE* newlabel2 = 0;
+    newlabel2 = makeLabel();
+
+    jumptac = tacCreate(TAC_JFALSE, newlabel, code0?code0->res:0, 0);
+    jumptac->prev = code0;
+	
+	elsejumptac = tacCreate(TAC_JMP, newlabel2, 0, 0);
+	elsejumptac->prev = code1;
+
+	elselabeltac = tacCreate(TAC_LABEL, newlabel,0,0);
+	elselabeltac->prev = elsejumptac;
+
+    finallabeltac = tacCreate(TAC_LABEL, newlabel2,0,0);
+    finallabeltac->prev = code2;
+
+    return tacJoin(jumptac,tacJoin(elselabeltac,finallabeltac));
+}
+
+TAC* makeWhile(TAC* code0, TAC* code1){
+    TAC* jumptac = 0;
+    TAC* labeltac = 0;
+    TAC* jumpWhileTac = 0;
+    TAC* labelWhileTac = 0;
+    HASH_NODE* newlabel = 0;
+    HASH_NODE* newlabel2 = 0;
+    newlabel = makeLabel();
+    newlabel2 = makeLabel();
+
+    labelWhileTac = tacCreate(TAC_LABEL, newlabel2,0,0);
+    labelWhileTac->prev = code0;
+
+    jumptac = tacCreate(TAC_JFALSE, newlabel, code0?code0->res:0, 0);
+    jumptac->prev = labelWhileTac;
+
+    jumpWhileTac = tacCreate(TAC_JMP, newlabel2,0,0);
+    jumpWhileTac->prev = code1;
+
+    labeltac = tacCreate(TAC_LABEL, newlabel,0,0);
+    labeltac->prev = jumpWhileTac;
+
+
+    return tacJoin(jumptac, labeltac);
+}
+
+
 TAC* generateCode(AST *node){
     int i;
     TAC* result = 0;
@@ -91,11 +157,36 @@ TAC* generateCode(AST *node){
     switch(node->type)
     {
         case AST_SYMBOL: result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
-        case AST_ADD: result = makeBinCode(TAC_ADD, code[0], code[1]);
+        case AST_ADD:result = makeBinCode(TAC_ADD, code[0], code[1]);
+            break;
+        case AST_SUB:result = makeBinCode(TAC_SUB, code[0], code[1]);
+            break;
+        case AST_MULT:result = makeBinCode(TAC_MULT, code[0], code[1]);
+            break;
+        case AST_DIV:result = makeBinCode(TAC_DIV, code[0], code[1]);
+            break;
+        case AST_OR:result = makeBinCode(TAC_OR, code[0], code[1]);
+            break;
+        case AST_AND:result = makeBinCode(TAC_AND, code[0], code[1]);
+            break;
+        case AST_OPDIF:result = makeBinCode(TAC_OPDIF, code[0], code[1]);
+            break;
+        case AST_OPEQ:result = makeBinCode(TAC_OPEQ, code[0], code[1]);
+            break;
+        case AST_OPGE:result = makeBinCode(TAC_OPGE, code[0], code[1]);
+            break;
+        case AST_OPLE:result = makeBinCode(TAC_OPLE, code[0], code[1]);
+            break;
+        case AST_BIG:result = makeBinCode(TAC_BIG, code[0], code[1]);
+            break;
+        case AST_LESS: result = makeBinCode(TAC_LESS, code[0], code[1]);
             break;
         case AST_ASSIGN: result = tacJoin(code[0],tacCreate(TAC_ASSIGN,node->symbol,code[0]?code[0]->res:0,code[1]?code[1]->res:0));
             break;
         case AST_IF: result = makeIf(code[0],code[1]); break;
+		case AST_WHILE: result = makeWhile(code[0], code[1]); break;
+		case AST_IFELSE: result = makeIfElse(code[0],code[1],code[2]);break;
+		
         default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
         break;
     }
