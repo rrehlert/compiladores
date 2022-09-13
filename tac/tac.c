@@ -160,34 +160,34 @@ TAC* generateCode(AST *node){
     //PROCESSA O NODO
     switch(node->type)
     {
-        case AST_SYMBOL: result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
-        case AST_ADD:result = makeBinCode(TAC_ADD, code[0], code[1]);
+		case AST_SYMBOL: result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
+		case AST_ADD:result = makeBinCode(TAC_ADD, code[0], code[1]);
             break;
-        case AST_SUB:result = makeBinCode(TAC_SUB, code[0], code[1]);
+		case AST_SUB:result = makeBinCode(TAC_SUB, code[0], code[1]);
             break;
-        case AST_MULT:result = makeBinCode(TAC_MULT, code[0], code[1]);
+		case AST_MULT:result = makeBinCode(TAC_MULT, code[0], code[1]);
             break;
-        case AST_DIV:result = makeBinCode(TAC_DIV, code[0], code[1]);
+		case AST_DIV:result = makeBinCode(TAC_DIV, code[0], code[1]);
             break;
-        case AST_OR:result = makeBinCode(TAC_OR, code[0], code[1]);
+		case AST_OR:result = makeBinCode(TAC_OR, code[0], code[1]);
             break;
-        case AST_AND:result = makeBinCode(TAC_AND, code[0], code[1]);
+		case AST_AND:result = makeBinCode(TAC_AND, code[0], code[1]);
             break;
-        case AST_OPDIF:result = makeBinCode(TAC_OPDIF, code[0], code[1]);
+		case AST_OPDIF:result = makeBinCode(TAC_OPDIF, code[0], code[1]);
             break;
-        case AST_OPEQ:result = makeBinCode(TAC_OPEQ, code[0], code[1]);
+		case AST_OPEQ:result = makeBinCode(TAC_OPEQ, code[0], code[1]);
             break;
-        case AST_OPGE:result = makeBinCode(TAC_OPGE, code[0], code[1]);
+		case AST_OPGE:result = makeBinCode(TAC_OPGE, code[0], code[1]);
             break;
-        case AST_OPLE:result = makeBinCode(TAC_OPLE, code[0], code[1]);
+		case AST_OPLE:result = makeBinCode(TAC_OPLE, code[0], code[1]);
             break;
-        case AST_BIG:result = makeBinCode(TAC_BIG, code[0], code[1]);
+		case AST_BIG:result = makeBinCode(TAC_BIG, code[0], code[1]);
             break;
-        case AST_LESS: result = makeBinCode(TAC_LESS, code[0], code[1]);
+		case AST_LESS: result = makeBinCode(TAC_LESS, code[0], code[1]);
             break;
-        case AST_ASSIGN: result = tacJoin(code[0],tacCreate(TAC_ASSIGN,node->symbol,code[0]?code[0]->res:0,code[1]?code[1]->res:0));
+		case AST_ASSIGN: result = tacJoin(code[0],tacCreate(TAC_ASSIGN,node->symbol,code[0]?code[0]->res:0,code[1]?code[1]->res:0));
             break;
-        case AST_IF: result = makeIf(code[0],code[1]); break;
+		case AST_IF: result = makeIf(code[0],code[1]); break;	
 		case AST_WHILE: result = makeWhile(code[0], code[1]); break;
 		case AST_IFELSE: result = makeIfElse(code[0],code[1],code[2]);break;
 		case AST_FUNC: result = tacJoin(tacJoin(tacCreate(TAC_BEGINFUNC, node->symbol,0,0),code[2])
