@@ -23,6 +23,10 @@
 #define TAC_MULT 17
 #define TAC_SUB 18
 #define TAC_ADD 19
+#define TAC_BEGINFUNC 20
+#define TAC_ENDFUNC 21
+#define TAC_PRINT 22
+
 
 
 typedef struct tac_node

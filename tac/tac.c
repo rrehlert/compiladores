@@ -39,6 +39,10 @@ void tacPrint(TAC* tac){
         case TAC_LABEL:fprintf(stderr,"TAC_LABEL"); break;
 	    case TAC_JMP:fprintf(stderr,"TAC_JMP"); break;
 
+		case TAC_BEGINFUNC: fprintf(stderr,"TAC_BEGINFUNC"); break;
+		case TAC_ENDFUNC: fprintf(stderr,"TAC_ENDFUNC"); break;
+		case TAC_PRINT: fprintf(stderr,"TAC_PRINT"); break;
+
         default:fprintf(stderr,"TAC_UNKNOWN"); break;
     }
 fprintf(stderr,",%s", (tac->res)?tac->res->text:"0");
@@ -186,7 +190,10 @@ TAC* generateCode(AST *node){
         case AST_IF: result = makeIf(code[0],code[1]); break;
 		case AST_WHILE: result = makeWhile(code[0], code[1]); break;
 		case AST_IFELSE: result = makeIfElse(code[0],code[1],code[2]);break;
-		
+		case AST_FUNC: result = tacJoin(tacJoin(tacCreate(TAC_BEGINFUNC, node->symbol,0,0),code[2])
+								,tacCreate(TAC_ENDFUNC,node->symbol,0,0));break;
+		case AST_PRINT: result = tacJoin(code[0],tacCreate(TAC_PRINT, node->symbol,code[0]?code[0]->res:0,0));break;
+
         default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
         break;
     }

@@ -4,6 +4,8 @@ char c('c');
 
 
 int main (){
+
+	print(a+b);
 	if(2>3){
 		b<-3;
 		a<-4,3;}
