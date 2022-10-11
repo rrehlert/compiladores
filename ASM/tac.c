@@ -230,9 +230,9 @@ void generateAsm(TAC* first)
     switch(tac->type)
     {
         case TAC_BEGINFUNC: fprintf(fout, "## TAC_BEGIN_FUN\n"
-                                    "\t.globl	_%s\n"
-                                    "\t.type	_%s, @function\n"
-                                    "_%s:\n"
+                                    "\t.globl	%s\n"
+                                    "\t.type	%s, @function\n"
+                                    "%s:\n"
                                     "\tpushq	%%rbp\n"
                                     "\tmovq	%%rsp, %%rbp\n", tac->res->text,tac->res->text,tac->res->text);
         break;
@@ -240,10 +240,27 @@ void generateAsm(TAC* first)
                                     "\tpopq	%%rbp\n"
                                     "\tret\n");
         break;
-        case TAC_PRINT: fprintf(fout,"	movl	_%s(%%rip), %%esi\n"
+        case TAC_PRINT: fprintf(fout,"## TAC_PRINT\n"
+                                "	movl	_%s(%%rip), %%esi\n"
                                 "\tleaq	printintstr(%%rip), %%rax\n"
                                 "\tmovq	%%rax, %%rdi\n"
                                 "\tcall	printf@PLT\n", tac->op1->text);
+        break;
+        case TAC_ASSIGN: fprintf(fout, "## TAC_ASSIGN\n"
+                                        "\tmovl\t_%s(%%rip), %%eax\n"
+                                        "\tmovl\t%%eax, _%s(%%rip)\n", tac->op1->text, tac->res->text);
+        break;
+        case TAC_ADD: fprintf(fout, "## TAC_ADD\n"
+                                    "\tmovl	$%s, %%edx\n"
+                                    "\tmovl	$%s, %%eax\n"
+                                    "\taddl	%%edx, %%eax\n"
+                                    "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
+        break;
+        case TAC_SUB: fprintf(fout, "## TAC_SUB\n"
+                                    "\tmovl\t$%s, %%edx\n"
+                                    "\tmovl\t$%s, %%eax\n"
+                                    "\tsubl\t%%eax, %%edx\n"
+                                    "\tmovl\t%%edx, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
         break;
 
     }

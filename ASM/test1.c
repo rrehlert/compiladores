@@ -1,7 +1,8 @@
 #include <stdio.h>
 int a;
+int b = 2;
+int c = 777;
 
 int fun(){
-a = 777;
-printf("%d", 5);
+    a = c-b;
 }

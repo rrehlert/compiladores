@@ -7,13 +7,23 @@
 	.size	a, 4
 a:
 	.zero	4
-	.section	.rodata
-.LC0:
-	.string	"%d"
+	.globl	b
+	.data
+	.align 4
+	.type	b, @object
+	.size	b, 4
+b:
+	.long	2
+	.globl	c
+	.align 4
+	.type	c, @object
+	.size	c, 4
+c:
+	.long	777
 	.text
-	.globl	main
-	.type	main, @function
-main:
+	.globl	fun
+	.type	fun, @function
+fun:
 .LFB0:
 	.cfi_startproc
 	pushq	%rbp
@@ -21,18 +31,16 @@ main:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	movl	$777, a(%rip)
-	movl	$5, %esi
-	leaq	.LC0(%rip), %rax
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	printf@PLT
-	movl	$0, %eax
+	movl	c(%rip), %edx
+	movl	b(%rip), %eax
+	subl	%eax, %edx
+	movl	%edx, a(%rip)
+	nop
 	popq	%rbp
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
 .LFE0:
-	.size	main, .-main
+	.size	fun, .-fun
 	.ident	"GCC: (GNU) 12.1.1 20220730"
 	.section	.note.GNU-stack,"",@progbits

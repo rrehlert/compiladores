@@ -1,18 +1,20 @@
-float a(2,5);
-int b(2);
-char c('c');
+int a(2);
+int b(777);
+int c(111);
 
 
 int main (){
+	a <- 5-2;
 
-	print(a+b);
+
+	\#print(a+b);
 	if(2>3){
 		b<-3;
-		a<-4,3;}
+		a<-4;}
 	else{
-		a<-2,7;
+		a<-7;
 		b<-7;
-}
+}#\
 	
 }
  

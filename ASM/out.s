@@ -4,12 +4,22 @@ printstringst:  .asciz "%s\n"
 
 .text
 ## TAC_BEGIN_FUN
-	.globl	_main
-	.type	_main, @function
-_main:
+	.globl	main
+	.type	main, @function
+main:
 	pushq	%rbp
 	movq	%rsp, %rbp
-	movl	_sPeRWeiRDfCk_Temp0(%rip), %esi
+## TAC_SUB
+	movl	$5, %edx
+	movl	$2, %eax
+	subl	%eax, %edx
+	movl	%edx, _sPeRWeiRDfCk_Temp0(%rip)
+## TAC_ASSIGN
+	movl	_sPeRWeiRDfCk_Temp0(%rip), %eax
+	movl	%eax, _a(%rip)
+
+	## TAC_PRINT
+	movl	_a(%rip), %esi
 	leaq	printintstr(%rip), %rax
 	movq	%rax, %rdi
 	call	printf@PLT
@@ -23,5 +33,8 @@ _main:
 ## DATA SECTION
 	.section	.rodata
 
+	.data
+_a:	.long	0
+_b:	.long	0
+_c:	.long	0
 _sPeRWeiRDfCk_Temp0:	.long	0
-_sPeRWeiRDfCk_Temp1:	.long	0
