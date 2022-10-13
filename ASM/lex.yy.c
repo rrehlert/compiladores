@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -505,9 +505,9 @@ int running = 1;
 int getLineNumber(void){
     return lineNumber;
 }
-#line 509 "lex.yy.c"
+#line 508 "lex.yy.c"
 
-#line 511 "lex.yy.c"
+#line 510 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENTS 1
@@ -728,7 +728,7 @@ YY_DECL
 #line 17 "scanner.l"
 
 
-#line 732 "lex.yy.c"
+#line 731 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -933,7 +933,7 @@ YY_RULE_SETUP
 #line 48 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 937 "lex.yy.c"
+#line 936 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENTS):
 	yyterminate();
