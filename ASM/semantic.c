@@ -25,7 +25,7 @@ void set_nodes(AST *node){
 		case AST_IDENT:
 			if(node->filho[0])
 				if (node->filho[0]->datatype != DATATYPE_INT){
-					fprintf(stderr, "Semantic ERROR: Vector expect int inside [] \n");
+					fprintf(stderr, "Semantic ERROR: Vector expect int inside [] in line %d\n", node->lineNumber);
 					++ SemanticErrors;
 					}
 
@@ -39,7 +39,7 @@ void set_nodes(AST *node){
 			if (node->filho[0]->datatype == node->filho[1]->datatype)
 				node->datatype = node->filho[0]->datatype;
 			else{
-				fprintf(stderr, "Semantic ERROR: Operators mismatch\n");
+				fprintf(stderr, "Semantic ERROR: Operators mismatch in line %d\n", node->lineNumber);
 				++ SemanticErrors;
 			}
 			break;
@@ -56,7 +56,7 @@ void set_nodes(AST *node){
 			if (node->filho[0]->datatype == node->filho[1]->datatype)
 				node->datatype = DATATYPE_BOOL;
 			else{
-				fprintf(stderr, "Semantic ERROR: Operators mismatch\n");
+				fprintf(stderr, "Semantic ERROR: Operators mismatch in line %d\n", node->lineNumber);
 				++ SemanticErrors;
 			}
 			break;
@@ -66,27 +66,27 @@ void set_nodes(AST *node){
 			break;
 		case AST_ASSIGN:
 			if ((!node->filho[1]) && (node->symbol->type == SYMBOL_VECTOR)){
-				fprintf(stderr, "Semantic ERROR: Vector %s expect [int] \n", node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: Vector %s expect [int] in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 			if (node->filho[1]){
 				if (node->filho[1]->datatype != DATATYPE_INT){
-					fprintf(stderr, "Semantic ERROR: Vector %s expect int inside [] \n", node->symbol->text);
+					fprintf(stderr, "Semantic ERROR: Vector %s expect int inside [] in line %d\n", node->symbol->text, node->lineNumber);
 					++ SemanticErrors;
 				}
 
 				if (node->symbol->datatype != node->filho[0]->datatype){
-					fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
+					fprintf(stderr, "Semantic ERROR: Trying to assign %s with the wrong type in line %d\n", node->symbol->text, node->lineNumber);
 					++ SemanticErrors;
 				}
 			}
 			if ((node->filho[1]) && (node->symbol->type != SYMBOL_VECTOR)){
-				fprintf(stderr, "Semantic ERROR: Variable %s used with unexpected [int] \n", node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: Variable %s used with unexpected [int] in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 
 			if (node->symbol->datatype != node->filho[0]->datatype){
-				fprintf(stderr, "Semantic ERROR: Trying to assign %s whith the wrong type\n", node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: Trying to assign %s with the wrong type in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 			}
 			break;
@@ -100,7 +100,7 @@ void set_nodes(AST *node){
 		case AST_IFELSE:
 		case AST_WHILE:
 			if(node->filho[0]->datatype != DATATYPE_BOOL){
-				fprintf(stderr, "Semantic ERROR: Flux expression must be type Bool\n");
+				fprintf(stderr, "Semantic ERROR: Flux expression must be type Bool in line %d\n",node->lineNumber);
 				++ SemanticErrors;
 			}
 			break;
@@ -116,7 +116,7 @@ void set_declaration(AST *node){
 	switch (node->type){
 		case AST_DEC:
 			if (node->symbol->type != SYMBOL_IDENTIFIER){
-				fprintf(stderr, "Semantic ERROR: variable %s already declared\n",node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: variable %s already declared in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 			node->symbol->type = SYMBOL_VECTOR;
@@ -126,7 +126,7 @@ void set_declaration(AST *node){
 				filho = node->filho[1]->filho[0];
 				while (filho){
 					if (filho->filho[0]->symbol->type != node->symbol->datatype){
-						fprintf(stderr, "Semantic ERROR: vector %s declared with wrong type\n",node->symbol->text);
+						fprintf(stderr, "Semantic ERROR: vector %s declared with wrong type in line %d\n", node->symbol->text, node->lineNumber);
 					++ SemanticErrors;
 					}
 /*
@@ -139,20 +139,20 @@ void set_declaration(AST *node){
 			break;
 		case AST_DECP:
 			if (node->symbol->type != SYMBOL_IDENTIFIER){
-				fprintf(stderr, "Semantic ERROR: variable %s already declared\n",node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: variable %s already declared in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 			node->symbol->type = SYMBOL_VARIABLE;
 			node->symbol->datatype = get_datatype(node->filho[0]);
 			node->symbol->startValue = node->filho[1]->symbol->text;
 			if (node->symbol->datatype != node->filho[1]->symbol->type){
-				fprintf(stderr, "Semantic ERROR: variable %s declared with wrong type\n",node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: variable %s declared with wrong type in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 			}
 			break;
 		case AST_FUNC:
 			if (node->symbol->type != SYMBOL_IDENTIFIER){
-				fprintf(stderr, "Semantic ERROR: function %s already declared\n",node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: function %s already declared in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 			node->symbol->type = SYMBOL_FUNCTION;
@@ -172,7 +172,7 @@ void set_declaration(AST *node){
 */			break;
 		case AST_PARAM:
 			if (node->symbol->type != SYMBOL_IDENTIFIER){	
-				fprintf(stderr, "Semantic ERROR: variable %s already declared\n",node->symbol->text);
+				fprintf(stderr, "Semantic ERROR: variable %s already declared in line %d\n", node->symbol->text, node->lineNumber);
 				++ SemanticErrors;
 				}
 			else{	

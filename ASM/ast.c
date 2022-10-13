@@ -5,6 +5,7 @@ AST* astCreate(int type, HASH_NODE *symbol, AST*filho0, AST*filho1, AST*filho2, 
 	newnode = (AST*) calloc(1,sizeof(AST));
 	newnode ->type = type;
 	newnode->symbol = symbol;
+    newnode->lineNumber = getLineNumber();
 	newnode->filho[0] = filho0;
 	newnode->filho[1] = filho1;
 	newnode->filho[2] = filho2;

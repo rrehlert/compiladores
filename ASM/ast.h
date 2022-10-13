@@ -54,6 +54,7 @@
 typedef struct astnode{
     int type;
     int datatype;
+    int lineNumber;
     struct astnode* filho[MAXFILHOS];
     HASH_NODE* symbol;
 } AST;
@@ -61,5 +62,5 @@ typedef struct astnode{
 AST* astCreate(int type, HASH_NODE *symbol, AST* filho0, AST* filho1, AST* filho2, AST* filho3);
 void astPrint(AST* node, int level);
 void astUndo(AST* node, FILE* arq);
-
+int getLineNumber();
 #endif //UNTITLED_AST_H
