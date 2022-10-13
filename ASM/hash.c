@@ -104,7 +104,7 @@ void printAsm(FILE *fout){
 	for (i=0;i<HASH_SIZE;i++)
 		for (node=Table[i];node;node=node->next){
 			if (strcmp(node->text,"main"))
-				if (node->type == SYMBOL_VARIABLE || node->type == SYMBOL_IDENTIFIER)
+				if (node->type == SYMBOL_VARIABLE || node->type == SYMBOL_IDENTIFIER || node->type == SYMBOL_INTEGER)
 					fprintf(fout,"_%s:\t.long\t0\n",node->text);
 		}
 }

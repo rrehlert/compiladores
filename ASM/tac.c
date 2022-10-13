@@ -160,7 +160,9 @@ TAC* generateCode(AST *node){
     //PROCESSA O NODO
     switch(node->type)
     {
-		case AST_SYMBOL: result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
+        case AST_SYMBOL:
+        case AST_IDENT:
+        case AST_INT:   result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
 		case AST_ADD:result = makeBinCode(TAC_ADD, code[0], code[1]);
             break;
 		case AST_SUB:result = makeBinCode(TAC_SUB, code[0], code[1]);
@@ -251,18 +253,57 @@ void generateAsm(TAC* first)
                                         "\tmovl\t%%eax, _%s(%%rip)\n", tac->op1->text, tac->res->text);
         break;
         case TAC_ADD: fprintf(fout, "## TAC_ADD\n"
-                                    "\tmovl	$%s, %%edx\n"
-                                    "\tmovl	$%s, %%eax\n"
-                                    "\taddl	%%edx, %%eax\n"
-                                    "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
+                                    "\tmovl\t_%s(%%rip), %%edx\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
+                                    "\taddl\t%%edx, %%eax\n"
+                                    "\tmovl\t%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
         break;
         case TAC_SUB: fprintf(fout, "## TAC_SUB\n"
-                                    "\tmovl\t$%s, %%edx\n"
-                                    "\tmovl\t$%s, %%eax\n"
+                                    "\tmovl\t_%s(%%rip), %%edx\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
                                     "\tsubl\t%%eax, %%edx\n"
                                     "\tmovl\t%%edx, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
         break;
-
+        case TAC_MULT: fprintf(fout,"## TAC_MULT\n"
+                                    "\tmovl\t_%s(%%rip), %%edx\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
+                                    "\timull\t%%edx, %%eax\n"
+                                    "\tmovl\t%%eax, _%s(%%rip)\n",tac->op1->text, tac->op2->text, tac->res->text);
+        break;
+        case TAC_DIV: fprintf(fout, "## TAC_DIV\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
+                                    "\tmovl\t_%s(%%rip), %%ecx\n"
+                                    "\tcltd\n"
+                                    "\tidivl\t%%ecx\n"
+                                    "\tmovl\t%%eax, _%s(%%rip)\n",tac->op1->text, tac->op2->text, tac->res->text);
+        break;
+        case TAC_LESS: fprintf(fout,"## TAC_LESS\n"
+                                    "\tmovl\t_%s(%%rip), %%edx\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
+                                    "\tcmpl\t%%eax,%%edx\n"
+                                    "\tsetl\t%%al\n"
+                                    "\tmovzbl\t%%al,%%eax\n"
+                                    "\tmovl\t%%eax, _%s(%%rip)\n",tac->op1->text, tac->op2->text, tac->res->text);
+        break;
+        case TAC_BIG: fprintf(fout, "## TAC_BIG\n"
+                                    "\tmovl\t_%s(%%rip), %%edx\n"
+                                    "\tmovl\t_%s(%%rip), %%eax\n"
+                                    "\tcmpl\t%%eax,%%edx\n"
+                                    "\tsetg\t%%al\n"
+                                    "\tmovzbl\t%%al,%%eax\n"
+                                    "\tmovl\t%%eax, _%s(%%rip)\n",tac->op1->text, tac->op2->text, tac->res->text);
+        break;
+        case TAC_JFALSE: fprintf(fout,  "## TAC_JFALSE\n"
+                                        "\tmovl\t_%s(%%rip), %%eax\n"
+                                        "\ttestl\t%%eax, %%eax\n"
+                                        "\tje\t.%s\n",tac->op1->text, tac->res->text);
+        break;
+        case TAC_JMP: fprintf(fout, "## TAC_JMP\n"
+                                    "\tjmp\t.%s\n",tac->res->text);
+        break;
+        case TAC_LABEL: fprintf(fout,   "## TAC_LABEL\n"
+                                        ".%s:\n", tac->res->text);
+        break;
     }
     }
     // HASH TABLE

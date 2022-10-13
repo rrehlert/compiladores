@@ -31,10 +31,15 @@ fun:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	movl	c(%rip), %edx
-	movl	b(%rip), %eax
-	subl	%eax, %edx
-	movl	%edx, a(%rip)
+	movl	a(%rip), %eax
+	testl	%eax, %eax
+	jne	.L2
+	movl	$3, a(%rip)
+	movl	$4, b(%rip)
+	jmp	.L3
+.L2:
+	movl	$4, a(%rip)
+.L3:
 	nop
 	popq	%rbp
 	.cfi_def_cfa 7, 8
