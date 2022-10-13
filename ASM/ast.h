@@ -56,7 +56,7 @@ typedef struct astnode{
     int datatype;
     struct astnode* filho[MAXFILHOS];
     HASH_NODE* symbol;
-}AST;
+} AST;
 
 AST* astCreate(int type, HASH_NODE *symbol, AST* filho0, AST* filho1, AST* filho2, AST* filho3);
 void astPrint(AST* node, int level);

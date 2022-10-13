@@ -103,8 +103,18 @@ void printAsm(FILE *fout){
 	"\t.data\n"	);
 	for (i=0;i<HASH_SIZE;i++)
 		for (node=Table[i];node;node=node->next){
-			if (strcmp(node->text,"main"))
-				if (node->type == SYMBOL_VARIABLE || node->type == SYMBOL_IDENTIFIER || node->type == SYMBOL_INTEGER)
+			if (node->datatype != 0){
+				if (node->type == SYMBOL_VARIABLE)
+					fprintf(fout,"_%s:\t.long\t%s\n",node->text,node->startValue);
+				if (node->type == SYMBOL_VECTOR)
 					fprintf(fout,"_%s:\t.long\t0\n",node->text);
+			}
+			else
+				switch(node->type){
+					case SYMBOL_INTEGER:fprintf(fout,"_%s:\t.long\t%s\n",node->text,node->text);
+									   break;
+
+					 default: fprintf(fout,"_%s:\t.long\t0\n",node->text);
+				}
 		}
 }

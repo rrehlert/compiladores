@@ -129,10 +129,11 @@ TAC* makeWhile(TAC* code0, TAC* code1){
     newlabel2 = makeLabel();
 
     labelWhileTac = tacCreate(TAC_LABEL, newlabel2,0,0);
-    labelWhileTac->prev = code0;
+    labelWhileTac->prev = code0->prev;
+	code0->prev = labelWhileTac;
 
     jumptac = tacCreate(TAC_JFALSE, newlabel, code0?code0->res:0, 0);
-    jumptac->prev = labelWhileTac;
+    jumptac->prev = code0;
 
     jumpWhileTac = tacCreate(TAC_JMP, newlabel2,0,0);
     jumpWhileTac->prev = code1;

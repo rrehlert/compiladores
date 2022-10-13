@@ -2,6 +2,7 @@
 Vitor Camargo de Moura - 00315212*/
 
 #include "semantic.h"
+#include "tac.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,18 +32,21 @@ int main(int argc, char ** argv){
 	set_declaration(no);
 	check_declaration();
 	set_nodes(no);
-	
 	int x = get_errors();
-	//if (x>0)
-		//exit(4);
+	if (x>0)
+		exit(4);
 	astPrint(no,0);
 	FILE *out;
 	out=fopen(argv[2],"w");
 	if (out==NULL)
 		fprintf(stderr, "Não foi possivel gerar output.txt\n");
-	astUndo(no,out);
-		
+	astUndo(no,out);	
 	hashPrint();
+	TAC* code;
+    code = generateCode(no);
+    tacPrintBack(code);
+    code = tacReverse(code);
+    generateAsm(code);
     return 0;
 }
 

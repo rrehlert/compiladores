@@ -75,13 +75,7 @@ AST* raiz;
 
 %%
 
-program : list										{ raiz = $1;
-                                                    TAC* code;
-                                                    code = generateCode($1);
-                                                    tacPrintBack(code);
-                                                    code = tacReverse(code);
-                                                    generateAsm(code);
-                                                    }
+program : list										{ raiz = $1;}
     ;
 
 list: dec ';' list									{ $$ = astCreate(AST_LIST, 0, $1, $3, 0, 0);}

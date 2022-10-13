@@ -1,12 +1,12 @@
 #include <stdio.h>
 int a;
-int b = 2;
+float b = 2.4;
 int c = 777;
+int d[4] = {1,2,3,4};
 
-int fun(){
+int main(){
     if(a==0){
         a = 3;
-        b = 4;
     }
     else
         a=4;

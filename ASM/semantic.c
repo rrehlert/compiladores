@@ -3,6 +3,7 @@
 
 
 #include "semantic.h"
+#include <string.h>
 
 int SemanticErrors = 0;
 
@@ -128,7 +129,10 @@ void set_declaration(AST *node){
 						fprintf(stderr, "Semantic ERROR: vector %s declared with wrong type\n",node->symbol->text);
 					++ SemanticErrors;
 					}
-
+/*
+					strcat(node->symbol->startValue,filho->filho[0]->symbol->text);
+					fprintf(stderr, "%s\n",filho->filho[0]->symbol->text);
+*/
 					filho = filho->filho[1];
 				}
 			}
@@ -140,6 +144,7 @@ void set_declaration(AST *node){
 				}
 			node->symbol->type = SYMBOL_VARIABLE;
 			node->symbol->datatype = get_datatype(node->filho[0]);
+			node->symbol->startValue = node->filho[1]->symbol->text;
 			if (node->symbol->datatype != node->filho[1]->symbol->type){
 				fprintf(stderr, "Semantic ERROR: variable %s declared with wrong type\n",node->symbol->text);
 				++ SemanticErrors;

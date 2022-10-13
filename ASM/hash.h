@@ -7,6 +7,8 @@ Vitor Camargo de Moura - 00315212*/
 #ifndef UNTITLED_HASH_H
 #define UNTITLED_HASH_H
 
+
+
 #define SYMBOL_IDENTIFIER 1
 #define SYMBOL_INTEGER 2
 #define SYMBOL_CHAR 2
@@ -27,6 +29,7 @@ Vitor Camargo de Moura - 00315212*/
 typedef struct hash_node{
 int type;
 int datatype;
+char *startValue;
 char *text;
 struct hash_node *next;
 } HASH_NODE;
